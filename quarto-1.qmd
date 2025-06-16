@@ -2,5 +2,36 @@
 title: "Quarto 1"
 author: Aaditya Gupta
 format: html
+execute: 
+  echo: false
 ---
 
+```{r}
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(palmerpenguins)
+})
+```
+
+```{r}
+penguins_clean <- penguins %>%
+  drop_na(flipper_length_mm, body_mass_g, species)
+
+ggplot(penguins_clean, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point(alpha = 0.7, size = 3) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 1, formula = y ~ x) +
+  labs(
+    title = "Body Mass vs. Flipper Length of Penguin Species",
+    subtitle = "Gentoo penguins tend to be the heaviest and have the longest flippers",
+    x = "Flipper Length (mm)",
+    y = "Body Mass (g)",
+    color = "Species",
+    caption = "Data: palmerpenguins package"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(margin = margin(b = 10)),
+    legend.position = "top"
+  )
+```
